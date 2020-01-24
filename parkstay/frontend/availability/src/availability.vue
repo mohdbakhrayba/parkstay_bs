@@ -312,6 +312,10 @@ background-color: #f8f8f8;
         color: white;
     }
 
+    .button{
+    padding: 1em 1em;
+    }
+
     .button.formButton {
         display: block;
         width: 100%;
@@ -320,12 +324,13 @@ background-color: #f8f8f8;
     .button.formButton1 {
         display: block;
         background-color: transparent;
-        width: 10%;
+
         color: rgb(119,119,119);
         float: left ;
         padding-bottom : none;
         margin-bottom: 0px;
     }
+
     .button:hover{
     font-color: #000;
     }

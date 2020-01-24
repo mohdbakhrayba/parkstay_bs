@@ -513,6 +513,7 @@ class CampsiteRateSerializer(serializers.ModelSerializer):
     class Meta:
         model = CampsiteRate
         read_only_fields = ('date_end',)
+        fields = '__all__'
 
 
 class CampsiteRateReadonlySerializer(serializers.ModelSerializer):
