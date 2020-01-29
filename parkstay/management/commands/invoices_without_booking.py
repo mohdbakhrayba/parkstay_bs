@@ -31,7 +31,7 @@ class Command(BaseCommand):
         for i in invoices:
             if BookingInvoice.objects.filter(invoice_reference=i.reference).count() == 0:
                print ("Found "+str(i.reference))
-               unmatch_invoices_to_booking.append(i.reference)
+               unmatch_invoices_to_booking.append({'reference': i.reference,'created': i.created, 'order_number': i.order_number, 'amount': i.amount})
 
         if len(unmatch_invoices_to_booking) > 0:   
              context = {
