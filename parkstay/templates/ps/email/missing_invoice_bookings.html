@@ -1,8 +1,10 @@
-<p>The following invoices do not have any matching booking.  The date query was from : {{ past_date }}</p>
+<p>The following invoices do not have any matching booking.  The date queried was from : {{ past_date }}</p>
 
 <BR>
-<b style='font-size:14px'>Invoices</b><br>
+<table style='margin-left: 10px' border=1 cellspacing=0 cellpadding=2>
+<tr><th>Invoice</th><th>Order No</th><th>Amount</th><th>Created</th></tr>
 {% for i in invoices %}
-&nbsp;&nbsp;{{ i }}<BR>
+<tr><td>{{ i.reference }}</td><td>#{{ i.order_number }}</td><td>${{ i.amount }}</td><td>{{ i.created }}</td></tr>
 
 {% endfor %}
+</table>
