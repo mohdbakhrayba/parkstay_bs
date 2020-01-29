@@ -1,0 +1,8 @@
+<p>The following invoices do not have any matching booking.  The date query was from : {{ past_date }}</p>
+
+<BR>
+<b style='font-size:14px'>Invoices</b><br>
+{% for i in invoices %}
+&nbsp;&nbsp;{{ i }}<BR>
+
+{% endfor %}

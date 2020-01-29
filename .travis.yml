@@ -28,7 +28,7 @@ install:
     - pip install -r requirements.txt
 before_script:
     - psql -c 'create database travis_ci_test;' -U postgres
-    - python manage_ps.py migrate --noinput
+    - python manage.py migrate --noinput
 script:
     - COVERAGE_FILE=.coverage_ledger coverage run --source="." manage.py test --noinput ledger
     - COVERAGE_FILE=.coverage_ps coverage run --source="." manage.py test --noinput parkstay
