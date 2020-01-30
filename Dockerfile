@@ -1,14 +1,14 @@
-# Prepare the base environment.
 FROM ubuntu:18.04 as builder_base_parkstay
 MAINTAINER asi@dbca.wa.gov.au
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Australia/Perth
-RUN apt-get update \
-  && apt-get upgrade -y \
-  && apt-get install --no-install-recommends -y wget git libmagic-dev gcc binutils libproj-dev gdal-bin \
-  python python-setuptools python-dev python-pip tzdata \
-  && pip install --upgrade pip
-
+ENV PRODUCTION_EMAIL=True
+ENV SECRET_KEY="ThisisNotRealKey"
+RUN apt-get update
+RUN apt-get upgrade -y
+RUN apt-get install --no-install-recommends -y wget git libmagic-dev gcc binutils libproj-dev gdal-bin python python-setuptools python-dev python-pip tzdata
+RUN apt-get install --no-install-recommends -y libpq-dev
+RUN pip install --upgrade pip
 # Install Python libs from requirements.txt.
 FROM builder_base_parkstay as python_libs_parkstay
 WORKDIR /app
@@ -22,7 +22,8 @@ RUN pip install --no-cache-dir -r requirements.txt \
 # Install the project (ensure that frontend projects have been built prior to this step).
 FROM python_libs_parkstay
 COPY gunicorn.ini manage.py ./
-COPY ledger ./ledger
+#COPY ledger ./ledger
+RUN touch /app/.env
 COPY parkstay ./parkstay
 RUN python manage.py collectstatic --noinput
 EXPOSE 8080
