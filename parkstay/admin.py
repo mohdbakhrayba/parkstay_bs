@@ -1,6 +1,14 @@
 from django.contrib.gis import admin
 from parkstay import models
 
+from django.contrib.admin import AdminSite
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import Group
+
+from django.db.models import Q
+
+from ledger.accounts.models import EmailUser
+from copy import deepcopy
 
 @admin.register(models.CampsiteClass)
 class CampsiteClassAdmin(admin.ModelAdmin):
@@ -30,6 +38,21 @@ class CampgroundAdmin(admin.GeoModelAdmin):
 @admin.register(models.CampgroundGroup)
 class CampgroundGroupAdmin(admin.ModelAdmin):
     filter_horizontal = ('members', 'campgrounds')
+
+    # Added based on moorings to speed up admin site
+
+    def formfield_for_manytomany(self, db_field, request, **kwargs):
+        if db_field.name == "members":
+            kwargs["queryset"] = EmailUser.objects.filter(is_staff=True)
+        return super(CampgroundGroupAdmin, self).formfield_for_manytomany(db_field, request, **kwargs)
+
+    def get_queryset(self, request):
+        """ Filter based on the group of the user"""
+        qs = super(CampgroundGroupAdmin, self).get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        group = models.CampgroundGroup.objects.filter(members__in=[request.user,])
+        return qs.filter(id__in=group)
 
 
 @admin.register(models.Campsite)
@@ -88,7 +111,7 @@ class CampsiteRateAdmin(admin.ModelAdmin):
 class ContactAdmin(admin.ModelAdmin):
     list_display = ('name', 'phone_number')
     search_fields = ('name', 'phone_number')
-
+        
 
 class ReasonAdmin(admin.ModelAdmin):
     list_display = ('code', 'text', 'editable')
