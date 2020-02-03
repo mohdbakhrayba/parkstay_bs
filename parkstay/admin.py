@@ -24,7 +24,8 @@ class ParkAdmin(admin.ModelAdmin):
     ordering = ('name',)
     list_filter = ('district',)
     search_fields = ('name',)
-   # openlayers_url = 'https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.13.1/OpenLayers.js'
+    openlayers_url = 'https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.13.1/OpenLayers.js'
+
 
 
 @admin.register(models.Campground)
