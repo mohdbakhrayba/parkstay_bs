@@ -24,6 +24,7 @@ class ParkAdmin(admin.ModelAdmin):
     ordering = ('name',)
     list_filter = ('district',)
     search_fields = ('name',)
+    openlayers_url = 'https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.13.1/OpenLayers.js'
 
 
 @admin.register(models.Campground)
@@ -111,7 +112,7 @@ class CampsiteRateAdmin(admin.ModelAdmin):
 class ContactAdmin(admin.ModelAdmin):
     list_display = ('name', 'phone_number')
     search_fields = ('name', 'phone_number')
-        
+
 
 class ReasonAdmin(admin.ModelAdmin):
     list_display = ('code', 'text', 'editable')
