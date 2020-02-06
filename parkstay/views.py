@@ -279,7 +279,7 @@ class MakeBookingsView(TemplateView):
                 customer = customer_qs.first().user
             else:
                 customer = EmailUser.objects.create(
-                        email=form.cleaned_data.get('email'), 
+                        email=form.cleaned_data.get('email').lower(),
                         first_name=form.cleaned_data.get('first_name'),
                         last_name=form.cleaned_data.get('last_name'),
                         phone_number=form.cleaned_data.get('phone'),
