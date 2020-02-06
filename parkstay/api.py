@@ -1761,10 +1761,10 @@ class BookingViewSet(viewsets.ModelViewSet):
             overridden_by = None if (override_price is None) else request.user
             try:
                 emailUser = request.data['customer']
-                customer = EmailUser.objects.get(email=emailUser['email'])
+                customer = EmailUser.objects.get(email=emailUser['email'].lower())
             except EmailUser.DoesNotExist:
                 customer = EmailUser.objects.create(
-                    email=emailUser['email'],
+                    email=emailUser['email'].lower(),
                     first_name=emailUser['first_name'],
                     last_name=emailUser['last_name'],
                     phone_number=emailUser['phone'],

@@ -59,9 +59,9 @@ def create_fixtures():
 
     pog = Group.objects.create(name='Parkstay Officers')
     
-    new_user = EmailUser.objects.create(email=NEW_USER_EMAIL, first_name=u'New', last_name=u'user 🤦')
+    new_user = EmailUser.objects.create(email=NEW_USER_EMAIL.lower(), first_name=u'New', last_name=u'user 🤦')
 
-    admin_user = EmailUser.objects.create(email=ADMIN_USER_EMAIL, first_name=u'Admin', last_name=u'user 🤦')
+    admin_user = EmailUser.objects.create(email=ADMIN_USER_EMAIL.lower(), first_name=u'Admin', last_name=u'user 🤦')
     admin_user.is_superuser = True
     admin_user.groups.add(pog)
     admin_user.save()
