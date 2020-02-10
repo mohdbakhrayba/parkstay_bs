@@ -71,7 +71,7 @@
         </div>
 
         <div v-if="status == 'online'" >
-        <nav class="navbar navbar-inverse navbar-fixed-bottom">
+          <nav class="navbar navbar-inverse navbar-fixed-bottom">
               <div>
 
                  <button type="button" class="button formButton1" @click="scrollMeTo('infoSection1')">
@@ -82,7 +82,7 @@
                         </button>
               </div>
 
-            </nav>
+           </nav>
           </div>
 
         <div class="row" v-if="name">
@@ -237,7 +237,7 @@
                     </tr></template>
                 </template></tbody>
             </table>
-        </div></div>
+        </div> </div><br><br><br><br>
     </div>
 </template>
 
