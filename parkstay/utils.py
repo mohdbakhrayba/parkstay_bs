@@ -698,6 +698,7 @@ def create_temp_bookingupdate(request, arrival, departure, booking_details, old_
                                      cost_total=total_price,
                                      customer=old_booking.customer,
                                      override_price=old_booking.override_price,
+                                     overridden_by=request.user,
                                      updating_booking=True,
                                      override_checks=True
                                      )
@@ -846,8 +847,14 @@ def update_booking(request, old_booking, booking_details):
                     current_regos.delete()
 
             if same_campsites and same_dates and same_vehicles and same_details:
-                new_history.delete()
-                return old_booking
+                # new_history.delete()
+                # return old_booking
+
+                if new_history:
+                    new_history.delete()
+                    return old_booking
+                else:
+                    return old_booking
 
             # Check difference of dates in booking
             old_booking_days = int((old_booking.departure - old_booking.arrival).days)
