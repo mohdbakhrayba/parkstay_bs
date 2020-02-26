@@ -78,7 +78,7 @@
                             About the campground
                         </button>
                  <button type="button" class="button formButton1" @click="scrollMeTo('bookSection')">
-                            Book Now
+                            Book now
                         </button>
               </div>
 
