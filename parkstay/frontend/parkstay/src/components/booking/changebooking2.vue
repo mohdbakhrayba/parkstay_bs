@@ -543,14 +543,10 @@ export default {
                 var selected_date = e.date.clone(); //Object.assign({},e.date);
                 var minDate = selected_date.clone().add(1, 'days');
 
-                console.log("selected_departure: " + vm.selected_departure);
-
                 if(selected_date > vm.departurePicker.data('DateTimePicker').date()){
                 vm.departurePicker.data("DateTimePicker").minDate(minDate);
                 // Set the departure date to a day after the arrival date
                 vm.departurePicker.data("DateTimePicker").date(minDate);
-
-                //console.log('if triggered:');
 
                 }
             });
