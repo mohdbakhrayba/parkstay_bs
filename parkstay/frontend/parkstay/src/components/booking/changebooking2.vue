@@ -538,13 +538,21 @@ export default {
             vm.arrivalPicker.on('dp.change', function(e) {
                 vm.booking.arrival = vm.arrivalPicker.data('DateTimePicker').date().format('DD/MM/YYYY');
                 vm.selected_arrival = vm.booking.arrival;
-                vm.selected_departure = "";
-                vm.booking.departure = "";
+                //vm.selected_departure = "";
+                //vm.booking.departure = "";
                 var selected_date = e.date.clone(); //Object.assign({},e.date);
                 var minDate = selected_date.clone().add(1, 'days');
+
+                console.log("selected_departure: " + vm.selected_departure);
+
+                if(selected_date > vm.departurePicker.data('DateTimePicker').date()){
                 vm.departurePicker.data("DateTimePicker").minDate(minDate);
                 // Set the departure date to a day after the arrival date
                 vm.departurePicker.data("DateTimePicker").date(minDate);
+
+                //console.log('if triggered:');
+
+                }
             });
             vm.departurePicker.on('dp.change', function(e) {
                 if (vm.departurePicker.data('DateTimePicker').date()) {
