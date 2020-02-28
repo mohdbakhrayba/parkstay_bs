@@ -10,6 +10,7 @@ from django.db.models import Q
 from ledger.accounts.models import EmailUser
 from copy import deepcopy
 
+
 @admin.register(models.CampsiteClass)
 class CampsiteClassAdmin(admin.ModelAdmin):
     list_display = ('name',)
@@ -52,7 +53,7 @@ class CampgroundGroupAdmin(admin.ModelAdmin):
         qs = super(CampgroundGroupAdmin, self).get_queryset(request)
         if request.user.is_superuser:
             return qs
-        group = models.CampgroundGroup.objects.filter(members__in=[request.user,])
+        group = models.CampgroundGroup.objects.filter(members__in=[request.user, ])
         return qs.filter(id__in=group)
 
 

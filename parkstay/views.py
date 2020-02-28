@@ -108,9 +108,9 @@ class DashboardView(UserPassesTestMixin, TemplateView):
 
 def abort_booking_view(request, *args, **kwargs):
     try:
-        change = bool(request.GET.get('change',False))
-        change_ratis = request.GET.get('change_ratis',None)
-        change_id = request.GET.get('change_id',None)
+        change = bool(request.GET.get('change', False))
+        change_ratis = request.GET.get('change_ratis', None)
+        change_id = request.GET.get('change_id', None)
         change_to = None
         booking = utils.get_session_booking(request.session)
         arrival = booking.arrival
@@ -249,7 +249,7 @@ class MakeBookingsView(TemplateView):
                 )
             else:
                 form.add_error(None, 'Duplicate regos not permitted.If unknown add number, e.g. Hire1, Hire2.')
-                return self.render_page(request, booking, form, vehicles,show_errors=True)
+                return self.render_page(request, booking, form, vehicles, show_errors=True)
        
         # Check if number of people is exceeded in any of the campsites
         for c in booking.campsites.all():
@@ -360,6 +360,7 @@ class ParkstayRoutingView(TemplateView):
 
 class MapView(TemplateView):
     template_name = 'ps/map.html'
+
 
 class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'ps/profile.html'
