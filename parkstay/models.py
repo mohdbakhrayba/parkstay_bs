@@ -261,7 +261,12 @@ class Campground(models.Model):
         if not sites:
             return None
         # Aggregate all current rates for those sites.
-        rates = [rate for rate in site.rates.current() for site in sites]
+        # rates = [rate for rate in site.rates.current() for site in sites]
+        rates = []
+        for site in sites:
+            for rate in site.rates.current():
+                rates.append(rate)
+
         if rates:
             # Return the minimum adult rate:
             return min(rate.rate.adult for rate in rates)
