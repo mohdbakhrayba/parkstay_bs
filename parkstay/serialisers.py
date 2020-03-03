@@ -213,6 +213,10 @@ class CampgroundMapSerializer(gis_serializers.GeoFeatureModelSerializer):
 
 
 class CampgroundImageSerializer(serializers.ModelSerializer):
+
+    def create(self, validated_data):
+        return super().create(validated_data)
+
     image = serializers.ImageField(max_length=17)
 
     def get_image(self, obj):
@@ -392,6 +396,8 @@ class CampgroundStayHistorySerializer(serializers.ModelSerializer):
 
 class CampsiteSerialiser(serializers.ModelSerializer):
     name = serializers.CharField(default='default', required=False)
+#    campground_id = serializers.IntegerField(write_only=True)
+#    campsite_class_id = serializers.IntegerField(write_only=True)
 
     class Meta:
         model = Campsite

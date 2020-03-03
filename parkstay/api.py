@@ -158,6 +158,14 @@ class CampsiteViewSet(viewsets.ModelViewSet):
         try:
             http_status = status.HTTP_200_OK
             number = request.data.pop('number')
+
+            # campground_temp = request.data.get('campground')
+            # campsite_temp = request.data.get('campsite_class')
+            #
+            # data = {
+            #
+            # }
+
             serializer = self.get_serializer(data=request.data, method='post')
             serializer.is_valid(raise_exception=True)
 
@@ -1693,7 +1701,7 @@ class BookingViewSet(viewsets.ModelViewSet):
                     bk['override_reason_info'] = booking.override_reason_info
                 if booking.send_invoice:
                     bk['send_invoice'] = booking.send_invoice
-                if booking.override_price >= 0:
+                if booking.override_price is not None and booking.override_price >= 0:
                     bk['discount'] = booking.discount
                 if not booking.paid:
                     bk['payment_callback_url'] = '/api/booking/{}/payment_callback.json'.format(booking.id)
