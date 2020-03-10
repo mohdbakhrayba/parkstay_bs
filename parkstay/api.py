@@ -369,7 +369,12 @@ class CampgroundStayHistoryViewSet(viewsets.ModelViewSet):
 
 
 class CampgroundMapViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Campground.objects.exclude(campground_type=3).annotate(Min('campsites__rates__rate__adult'))
+
+    #queryset = Campground.objects.exclude(campground_type=3).annotate(Min('campsites__rates__rate__adult'))
+
+    #Changed to speed up the loading of icons in map
+    queryset = Campground.objects.exclude(campground_type=3)
+
     serializer_class = CampgroundMapSerializer
     permission_classes = []
 
