@@ -273,6 +273,16 @@ class Campground(models.Model):
         else:
             return None
 
+    def get_campground_rate(self):
+        today = date.today()
+        rates = CampsiteRate.objects.filter(campsite__in=Campsite.objects.filter(campground=self)).filter(date_start__lte=today).order_by('-date_start').first()
+        #rates = CampsiteRate.objects.filter(campsite__in = Campsite.objects.filter(campground = self)).filter()  #.first()
+        if rates:
+            adult_rate = rates.rate.adult
+        else:
+            adult_rate = None
+        return adult_rate
+
     def createCampsitePriceHistory(self, data):
         '''Create Multiple campsite rates
         '''
