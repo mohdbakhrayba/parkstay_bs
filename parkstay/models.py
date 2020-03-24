@@ -337,6 +337,7 @@ class CampgroundGroup(models.Model):
 
 class CampgroundImage(models.Model):
     image = models.ImageField(max_length=255, upload_to=campground_image_path)
+    # image_thumbnail here?
     campground = models.ForeignKey(Campground, related_name='images')
     checksum = models.CharField(blank=True, max_length=255, editable=False)
 
@@ -352,6 +353,7 @@ class CampgroundImage(models.Model):
 
     def strip_b64_header(self, content):
         if ';base64,' in content:
+            print('content: ',content)
             header, base64_data = content.split(';base64,')
             return base64_data
         return content
@@ -377,14 +379,14 @@ class CampgroundImage(models.Model):
         self.checksum = self._calculate_checksum(self.image)
         self.image.seek(0)
         if not self.pk:
-            self.image = self.createImage(base64.b64encode(self.image.read()))
+            self.image = self.createImage(base64.b64encode(self.image.read()).decode('ascii'))
         else:
             orig = CampgroundImage.objects.get(pk=self.pk)
             if orig.image:
                 if orig.checksum != self.checksum:
                     if os.path.isfile(orig.image.path):
                         os.remove(orig.image)
-                    self.image = self.createImage(base64.b64encode(self.image.read()))
+                    self.image = self.createImage(base64.b64encode(self.image.read()).decode('ascii'))
                 else:
                     pass
 
