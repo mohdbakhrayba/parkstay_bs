@@ -150,7 +150,6 @@ class CampgroundMapFeatureSerializer(serializers.HyperlinkedModelSerializer):
         model = Feature
         fields = ('id', 'name', 'description', 'image')
 
-
 class CampgroundMapRegionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Region
@@ -191,10 +190,12 @@ class CampgroundMapImageSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class CampgroundMapSerializer(gis_serializers.GeoFeatureModelSerializer):
+
     features = CampgroundMapFeatureSerializer(read_only=True, many=True)
     park = CampgroundMapParkSerializer(read_only=True)
     images = CampgroundMapImageSerializer(read_only=True, many=True)
-    price_hint = serializers.DecimalField(max_digits=5, decimal_places=2, read_only=True, source='get_cheapest_rate')
+    #price_hint = serializers.DecimalField(max_digits=5, decimal_places=2, read_only=True, source='get_cheapest_rate')
+    price_hint = serializers.DecimalField(max_digits=5, decimal_places=2, read_only=True, source='get_campground_rate')
 
     class Meta:
         model = Campground
@@ -213,6 +214,10 @@ class CampgroundMapSerializer(gis_serializers.GeoFeatureModelSerializer):
 
 
 class CampgroundImageSerializer(serializers.ModelSerializer):
+
+    def create(self, validated_data):
+        return super().create(validated_data)
+
     image = serializers.ImageField(max_length=17)
 
     def get_image(self, obj):
@@ -392,6 +397,8 @@ class CampgroundStayHistorySerializer(serializers.ModelSerializer):
 
 class CampsiteSerialiser(serializers.ModelSerializer):
     name = serializers.CharField(default='default', required=False)
+#    campground_id = serializers.IntegerField(write_only=True)
+#    campsite_class_id = serializers.IntegerField(write_only=True)
 
     class Meta:
         model = Campsite
@@ -513,6 +520,7 @@ class CampsiteRateSerializer(serializers.ModelSerializer):
     class Meta:
         model = CampsiteRate
         read_only_fields = ('date_end',)
+        fields = '__all__'
 
 
 class CampsiteRateReadonlySerializer(serializers.ModelSerializer):

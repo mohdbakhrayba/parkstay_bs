@@ -1,6 +1,15 @@
 from django.contrib.gis import admin
 from parkstay import models
 
+from django.contrib.admin import AdminSite
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import Group
+
+from django.db.models import Q
+
+from ledger.accounts.models import EmailUser
+from copy import deepcopy
+
 
 @admin.register(models.CampsiteClass)
 class CampsiteClassAdmin(admin.ModelAdmin):
@@ -11,11 +20,12 @@ class CampsiteClassAdmin(admin.ModelAdmin):
 
 
 @admin.register(models.Park)
-class ParkAdmin(admin.ModelAdmin):
+class ParkAdmin(admin.GeoModelAdmin):
     list_display = ('name', 'district')
     ordering = ('name',)
     list_filter = ('district',)
     search_fields = ('name',)
+    openlayers_url = 'https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.13.1/OpenLayers.js'
 
 
 @admin.register(models.Campground)
@@ -30,6 +40,21 @@ class CampgroundAdmin(admin.GeoModelAdmin):
 @admin.register(models.CampgroundGroup)
 class CampgroundGroupAdmin(admin.ModelAdmin):
     filter_horizontal = ('members', 'campgrounds')
+
+    # Added based on moorings to speed up admin site
+
+    def formfield_for_manytomany(self, db_field, request, **kwargs):
+        if db_field.name == "members":
+            kwargs["queryset"] = EmailUser.objects.filter(is_staff=True)
+        return super(CampgroundGroupAdmin, self).formfield_for_manytomany(db_field, request, **kwargs)
+
+    def get_queryset(self, request):
+        """ Filter based on the group of the user"""
+        qs = super(CampgroundGroupAdmin, self).get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        group = models.CampgroundGroup.objects.filter(members__in=[request.user, ])
+        return qs.filter(id__in=group)
 
 
 @admin.register(models.Campsite)

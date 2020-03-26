@@ -158,6 +158,14 @@ class CampsiteViewSet(viewsets.ModelViewSet):
         try:
             http_status = status.HTTP_200_OK
             number = request.data.pop('number')
+
+            # campground_temp = request.data.get('campground')
+            # campsite_temp = request.data.get('campsite_class')
+            #
+            # data = {
+            #
+            # }
+
             serializer = self.get_serializer(data=request.data, method='post')
             serializer.is_valid(raise_exception=True)
 
@@ -361,7 +369,12 @@ class CampgroundStayHistoryViewSet(viewsets.ModelViewSet):
 
 
 class CampgroundMapViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Campground.objects.exclude(campground_type=3).annotate(Min('campsites__rates__rate__adult'))
+
+    #queryset = Campground.objects.exclude(campground_type=3).annotate(Min('campsites__rates__rate__adult'))
+
+    #Changed to speed up the loading of icons in map
+
+    queryset = Campground.objects.exclude(campground_type=3)
     serializer_class = CampgroundMapSerializer
     permission_classes = []
 
@@ -1693,7 +1706,7 @@ class BookingViewSet(viewsets.ModelViewSet):
                     bk['override_reason_info'] = booking.override_reason_info
                 if booking.send_invoice:
                     bk['send_invoice'] = booking.send_invoice
-                if booking.override_price >= 0:
+                if booking.override_price is not None and booking.override_price >= 0:
                     bk['discount'] = booking.discount
                 if not booking.paid:
                     bk['payment_callback_url'] = '/api/booking/{}/payment_callback.json'.format(booking.id)
@@ -1761,10 +1774,10 @@ class BookingViewSet(viewsets.ModelViewSet):
             overridden_by = None if (override_price is None) else request.user
             try:
                 emailUser = request.data['customer']
-                customer = EmailUser.objects.get(email=emailUser['email'])
+                customer = EmailUser.objects.get(email=emailUser['email'].lower())
             except EmailUser.DoesNotExist:
                 customer = EmailUser.objects.create(
-                    email=emailUser['email'],
+                    email=emailUser['email'].lower(),
                     first_name=emailUser['first_name'],
                     last_name=emailUser['last_name'],
                     phone_number=emailUser['phone'],

@@ -261,12 +261,27 @@ class Campground(models.Model):
         if not sites:
             return None
         # Aggregate all current rates for those sites.
-        rates = [rate for rate in site.rates.current() for site in sites]
+        # rates = [rate for rate in site.rates.current() for site in sites]
+        rates = []
+        for site in sites:
+            for rate in site.rates.current():
+                rates.append(rate)
+
         if rates:
             # Return the minimum adult rate:
             return min(rate.rate.adult for rate in rates)
         else:
             return None
+
+    def get_campground_rate(self):
+        today = date.today()
+        rates = CampsiteRate.objects.filter(campsite__in=Campsite.objects.filter(campground=self)).filter(date_start__lte=today).order_by('-date_start').first()
+        #rates = CampsiteRate.objects.filter(campsite__in = Campsite.objects.filter(campground = self)).filter()  #.first()
+        if rates:
+            adult_rate = rates.rate.adult
+        else:
+            adult_rate = None
+        return adult_rate
 
     def createCampsitePriceHistory(self, data):
         '''Create Multiple campsite rates

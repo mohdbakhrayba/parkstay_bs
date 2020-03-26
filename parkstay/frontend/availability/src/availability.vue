@@ -71,18 +71,18 @@
         </div>
 
         <div v-if="status == 'online'" >
-        <nav class="navbar navbar-inverse navbar-fixed-bottom">
+          <nav class="navbar navbar-inverse navbar-fixed-bottom">
               <div>
 
                  <button type="button" class="button formButton1" @click="scrollMeTo('infoSection1')">
                             About the campground
                         </button>
                  <button type="button" class="button formButton1" @click="scrollMeTo('bookSection')">
-                            Book Now
+                            Book now
                         </button>
               </div>
 
-            </nav>
+           </nav>
           </div>
 
         <div class="row" v-if="name">
@@ -237,7 +237,7 @@
                     </tr></template>
                 </template></tbody>
             </table>
-        </div></div>
+        </div> </div><br><br><br><br>
     </div>
 </template>
 
@@ -312,6 +312,10 @@ background-color: #f8f8f8;
         color: white;
     }
 
+    .button{
+    padding: 1em 1em;
+    }
+
     .button.formButton {
         display: block;
         width: 100%;
@@ -320,12 +324,13 @@ background-color: #f8f8f8;
     .button.formButton1 {
         display: block;
         background-color: transparent;
-        width: 10%;
+
         color: rgb(119,119,119);
         float: left ;
         padding-bottom : none;
         margin-bottom: 0px;
     }
+
     .button:hover{
     font-color: #000;
     }
