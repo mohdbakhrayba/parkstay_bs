@@ -92,7 +92,7 @@ class Command(BaseCommand):
         for email_to in settings.NOTIFICATION_EMAIL.split(","):
                email_list.append(email_to)
         print ("SENDING EMAIL")
-
+        print (settings.EMAIL_FROM)
 
         emails.sendHtmlEmail(tuple(email_list),"[PARKSTAY] Bulk Refund Script",context,'ps/email/bulk_refund.html',None,None,settings.EMAIL_FROM,'system-oim',attachments=None)
         #print ("COMPLETED")  
