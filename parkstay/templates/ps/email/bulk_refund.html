@@ -4,7 +4,7 @@
 <table style='margin-left: 10px' border=1 cellspacing=0 cellpadding=2>
 <tr><th>Booking No</th><th>Customer</th><th>Amount</th><th>Invoices</th><th>Refund Success</th></tr>
 {% for i in booking_refunds %}
-<tr ><td>{{ i.booking_id }}</td><td>{{ i.booking_customer }}</td><td>${{ i.amount }}</td><td>{{ i.invoices }}</td><TD {% if refund_success == True %}style='background-color:#cbf7c3'{% else %}style='background-color:#ffebeb'{% endif %}>{{ i.refund_success }}</TD></tr>
+<tr ><td>{{ i.booking_id }}</td><td>{{ i.booking_customer }}</td><td>${{ i.amount }}</td><td>{{ i.invoices }}</td><TD {% if i.refund_success == True %}style='background-color:#cbf7c3'{% else %}style='background-color:#ffebeb'{% endif %}>{{ i.refund_success }}</TD></tr>
 
 {% endfor %}
 </table>
