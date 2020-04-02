@@ -37,20 +37,24 @@ class Command(BaseCommand):
         for line in f:
            line = line.strip('\n')
            print(line+":")
-           
+           refund_success = False 
            try:
                b = Booking.objects.get(id=line)
                print (b) 
         #fo    r b in bookings:
                print (b.created)
+               invoice_string = ""
+               refund_success = False
+               booking_refund_success = False
                bookinginvoice = BookingInvoice.objects.filter(booking=b)
                for bi in bookinginvoice:
                     print (bi.invoice_reference)
                     invoices = Invoice.objects.filter(reference=bi.invoice_reference)
-                    invoice_string = ""
+                    #invoice_string = ""
                     bp_amount = "0.00"
+                    refund_success = False
                     for inv in invoices:
-                        invoice_string = invoice_string + inv.reference+"," 
+                        #invoice_string = invoice_string + inv.reference+"," 
                         if  inv.bpoint_transactions.count() == 1:
                             for bp in inv.bpoint_transactions:
                                 if bp.action == 'payment':
@@ -64,6 +68,7 @@ class Command(BaseCommand):
                                         info = {'amount': Decimal('{:.2f}'.format(float(bp.amount))), 'details' : 'Refund via system'}
                                         refund = bp.refund(info,user)
                                         refund_success = True 
+                                        booking_refund_success = True
                                         update_payments(bp.crn1)  
                                     except Exception as e:
                                         print (e)
@@ -71,11 +76,13 @@ class Command(BaseCommand):
                                         #bpoint_failed_amount = Decimal(bp_txn['line-amount'])
                                         #lines = []
                                         #lines.append({'ledger_description':str("Refund failed for txn "+bp_txn['txn_number']),"quantity":1,"price_incl_tax":bpoint_failed_amount,"oracle_code":str(settings.UNALLOCATED_ORACLE_CODE), 'line_status': 1})
-      
+                          
                         else:
                             refund_success = False
                             print ("Too many transactions")
-               booking_refunds.append({'booking_id': b.id, 'amount': bp_amount, 'booking_customer': b.customer.email, 'invoices': invoice_string, 'refund_success': refund_success })
+
+                        invoice_string = invoice_string + inv.reference +"("+str(refund_success)+"),"
+               booking_refunds.append({'booking_id': b.id, 'amount': bp_amount, 'booking_customer': b.customer.email, 'invoices': invoice_string, 'refund_success': booking_refund_success})
            except Exception as e:
                print (e)
                booking_errors.append(line)
