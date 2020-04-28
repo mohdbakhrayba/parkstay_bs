@@ -42,10 +42,10 @@ class Command(BaseCommand):
                b = Booking.objects.get(id=line)
                b.cancelBooking('COVID');
                print (b) 
-               booking_cancelled.append({'booking_id': b.id, })
+               booking_cancelled.append({'booking_id': b.id,'booking_customer': b.customer })
            except Exception as e:
                print (e)
-               booking_errors.append(line)
+               booking_errors.append({"bookingid": line,"booking_error": str(e)})
            print ("-----")
 
         # Send email with success and failed refunds 
