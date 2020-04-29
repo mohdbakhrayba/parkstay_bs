@@ -217,7 +217,6 @@ class MakeBookingsView(TemplateView):
         # re-render the page if the form doesn't validate
         if (not form.is_valid()) or (not vehicles.is_valid()):
             return self.render_page(request, booking, form, vehicles, show_errors=True)
-
         # update the booking object with information from the form
         if not booking.details:
             booking.details = {}
@@ -230,6 +229,9 @@ class MakeBookingsView(TemplateView):
         booking.details['num_concession'] = form.cleaned_data.get('num_concession')
         booking.details['num_child'] = form.cleaned_data.get('num_child')
         booking.details['num_infant'] = form.cleaned_data.get('num_infant')
+        booking.details['toc'] = request.POST.get('toc',False)
+        booking.details['outsideregion'] = request.POST.get('outsideregion', False)      
+ 
 
         # update vehicle registrations from form
         VEHICLE_CHOICES = {'0': 'vehicle', '1': 'concession', '2': 'motorbike'}
