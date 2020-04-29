@@ -9,10 +9,10 @@
 {% endfor %}
 </table>
 <br>
-<h3>Errors finding booking</h3>
+<h3>Errors cancelling booking</h3>
 <table style='margin-left: 10px' border=1 cellspacing=0 cellpadding=2>
 {% for d in booking_errors %}
-  <tr><td>{{ d }}</td></tr>
+  <tr><td>{{ d.bookingid }}</td><td>{{ d.booking_error }} </td></tr>
 {% endfor %}
 
 </table>
