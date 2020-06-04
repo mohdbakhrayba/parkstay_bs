@@ -18,7 +18,7 @@ INSTALLED_APPS += [
     'taggit',
     'rest_framework',
     'rest_framework_gis',
-
+    'django_site_queue',
 ]
 
 MIDDLEWARE_CLASSES += [
@@ -50,6 +50,7 @@ else:
 
 
 TEMPLATES[0]['DIRS'].append(os.path.join(BASE_DIR, 'parkstay', 'templates'))
+TEMPLATES[0]['DIRS'].append(os.path.join(BASE_DIR, 'django_site_queue', 'templates'))
 TEMPLATES[0]['OPTIONS']['context_processors'].append('parkstay.context_processors.parkstay_url')
 CACHES = {
     'default': {
