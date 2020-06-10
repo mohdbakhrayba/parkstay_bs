@@ -130,7 +130,7 @@
                                 <span class="searchTitle">{{ f.name }}</span>
                             </div>
                             <div class="small-12 medium-12 large-12 columns" v-if="f.images && f.images[0] && f.images[0].image">
-                                <img class="thumbnail" v-bind:src="f.images[0].image"/>
+                                <img class="thumbnail" v-bind:src="'/campground-image/146/248/?mediafile='+f.images[0].image"/>
                             </div>
                             <div class="small-12 medium-9 large-9 columns">
                                 <div v-html="f.description"/>
@@ -659,7 +659,7 @@ export default {
                         // when you pass control of the popup element to OpenLayers :(
                         $("#mapPopupName")[0].innerHTML = feature.get('name');
                         if (feature.get('images')) {
-                            $("#mapPopupImage").attr('src', feature.get('images')[0].image);
+                            $("#mapPopupImage").attr('src', '/campground-image/146/248/?mediafile='+feature.get('images')[0].image);
                             $("#mapPopupImage").show();
                         } else {
                             $("#mapPopupImage").hide();
@@ -717,7 +717,7 @@ export default {
                 // when you pass control of the popup element to OpenLayers :(
                 $("#mapPopupName")[0].innerHTML = feature.get('name');
                 if (feature.get('images')) {
-                   $("#mapPopupImage").attr('src', feature.get('images')[0].image);
+                   $("#mapPopupImage").attr('src', '/campground-image/146/248/?mediafile='+feature.get('images')[0].image);
                     $("#mapPopupImage").show();
                 } else {
                     $("#mapPopupImage").hide();
@@ -1233,7 +1233,7 @@ export default {
                 // when you pass control of the popup element to OpenLayers :(
                 $("#mapPopupName")[0].innerHTML = feature.get('name');
                 if (feature.get('images')) {
-                    $("#mapPopupImage").attr('src', feature.get('images')[0].image);
+                    $("#mapPopupImage").attr('src', '/campground-image/146/248/?mediafile='+feature.get('images')[0].image);
                     $("#mapPopupImage").show();
                 } else {
                     $("#mapPopupImage").hide();

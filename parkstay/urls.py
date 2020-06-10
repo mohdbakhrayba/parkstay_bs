@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 from rest_framework import routers
 from parkstay import views, api
 from parkstay.admin import admin
-
+from parkstay import view_file
 from ledger.urls import urlpatterns as ledger_patterns
 from django_site_queue import urls as site_queue_urls
 
@@ -79,6 +79,7 @@ urlpatterns = [
     url(r'^mybookings/', views.MyBookingsView.as_view(), name='public_my_bookings'),
     url(r'^success/', views.BookingSuccessView.as_view(), name='public_booking_success'),
     url(r'^map/', views.MapView.as_view(), name='map'),
+    url(r'^campground-image/(?P<height>[0-9]+)/(?P<width>[0-9]+)/', view_file.getFile, name='campground_image_resize'), 
 ] + ledger_patterns
 
 if settings.DEBUG:  # Serve media locally in development.
