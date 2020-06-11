@@ -70,7 +70,7 @@
                             <h3 class="text-primary">Booking for</h3>
                         </div>
                         <div class="col-md-2">
-                              <img alt="campground"  class="img-thumbnail img-responsive" src="{{ booking.campground.first_image.image.url }}">
+                              <img alt="campground"  class="img-thumbnail img-responsive" src="/campground-image/86/148/?mediafile={{ booking.campground.first_image.image.url }}">
                               <p class="pricing" v-cloak >
                             {% verbatim %}
                                   <strong>${{ perDayFee|formatMoney(2) }}</strong>
