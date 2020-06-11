@@ -346,8 +346,8 @@ export default {
                     var range = Moment.range(Moment(his.range_start, "DD/MM/YYYY"), Moment(his.range_end, "DD/MM/YYYY"));
                     var arrival = Moment(vm.booking.arrival, "YYYY-MM-DD");
                     if (range.contains(arrival)) {
-                        vm.departurePicker.data("DateTimePicker").maxDate(arrival.clone().add(his.max_days, 'days'));
-                        vm.departurePicker.data("DateTimePicker").date(null);
+                         vm.departurePicker.data("DateTimePicker").maxDate(arrival.clone().add(his.max_days, 'days'));
+                         vm.departurePicker.data("DateTimePicker").date(null);
                     }
                 });
             }
@@ -355,6 +355,7 @@ export default {
             }
             vm.fetchSites();
             vm.initSelectTwo();
+            vm.addEventListeners();
             vm.updatePrices();
         },
         selected_departure: function() {
@@ -563,6 +564,9 @@ export default {
             });
             // Set the initial minimum departure date for the booking
             vm.departurePicker.data("DateTimePicker").minDate(Moment(vm.selected_arrival,"DD/MM/YYYY").add(1,'days'));
+            console.log('addEventListeners');
+            vm.departurePicker.trigger( 'change' );
+            vm.arrivalPicker.trigger( 'change' );
         },
         addGuestCount: function(guest) {
             let vm = this;
