@@ -354,6 +354,7 @@ export default {
             if (this.initialised){
             }
             vm.fetchSites();
+            vm.initSelectTwo();
             vm.updatePrices();
         },
         selected_departure: function() {
@@ -361,6 +362,7 @@ export default {
             if (this.initialised){
             }
             vm.fetchSites();
+            vm.initSelectTwo();
             vm.updatePrices();
         },
         booking_type: function() {
@@ -475,7 +477,7 @@ export default {
         },
         fetchSites: function() {
             let vm = this;
-            if (!vm.fetchingSites){
+            if (!vm.fetchingSites) {
                 if (vm.selected_arrival && vm.selected_departure) {
                     vm.fetchingSites = true;
                     vm.loading.push('fetching campsites');
