@@ -202,7 +202,9 @@ export default {
                     url: api_endpoints.campgroundCampsites(this.$route.params.id),
                     dataSrc: ''
                 },
-                columnDefs: [{
+                columnDefs: [
+                { "defaultContent": "-", "targets": "_all" },
+                {
                     responsivePriority: 1,
                     targets: 0
                 }, {
