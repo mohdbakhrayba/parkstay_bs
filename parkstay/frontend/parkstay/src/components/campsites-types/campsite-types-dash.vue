@@ -92,13 +92,19 @@ export default {
                 responsive: true,
                 processing:true,
                 columnDefs: [
+                // { targets: [0,1,2], responsivePriority:1 },
+                 { "defaultContent": "-", "targets": "_all" },
+
+
+
                     {
                     responsivePriority: 1,
-                    targets: 0
+                    targets: 0,
                     },
                     {
                     responsivePriority: 2,
                     targets: 1
+
                     },
                     {
                         responsivePriority: 3,

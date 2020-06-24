@@ -28,6 +28,7 @@ from parkstay.models import (CampgroundPriceHistory,
                              ParkEntryRate,
                              BookingVehicleRego,
                              BookingHistory,
+                             Contact
                              )
 from rest_framework import serializers
 import rest_framework_gis.serializers as gis_serializers
@@ -818,13 +819,15 @@ class PhoneSerializer(serializers.ModelSerializer):
 
 class ContactSerializer(serializers.ModelSerializer):
     class Meta:
-        model = EmailUser
-        fields = (
-            'id',
-            'email',
-            'phone_number',
-            'mobile_number',
-        )
+        model = Contact
+        fields = '__all__'
+        #fields = (
+        #    'id',
+        #    'email',
+        #    'phone_number',
+        #    'mobile_number',
+        #    'name',
+        #)
 
     def validate(self, obj):
         if not obj.get('phone_number') and not obj.get('mobile_number'):

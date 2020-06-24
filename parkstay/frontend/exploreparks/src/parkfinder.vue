@@ -644,7 +644,7 @@ export default {
                 }
                 // pan to the spot, zoom slightly closer in for campgrounds
                 view.animate({
-                    center: ol.proj.fromLonLat(target['coordinates']),
+                    center: vm.ol.proj.fromLonLat(target['coordinates']),
                     resolution: resolution,
                     duration: 1000
                 });
@@ -685,7 +685,7 @@ export default {
             }
 
             // no match, forward on to mapbox geocode query
-            var center = ol.proj.toLonLat(vm.center);
+            var center = vm.ol.proj.toLonLat(vm.center);
             $.ajax({
                 url: 'https://mapbox.dpaw.wa.gov.au/geocoding/v5/mapbox.places/'+encodeURIComponent(place)+'.json?'+ $.param({
                     country: 'au',
@@ -698,7 +698,7 @@ export default {
                     if (data.features && data.features.length > 0) {
                         var view = vm.olmap.getView();
                         view.animate({
-                            center: ol.proj.fromLonLat(data.features[0].geometry.coordinates),
+                            center: vm.ol.proj.fromLonLat(data.features[0].geometry.coordinates),
                             resolution: vm.resolutions[12],
                             duration: 1000
                         });
@@ -904,10 +904,10 @@ export default {
         var vm = this;
         $(document).foundation();
         var ol = {'proj': proj, 'extent': extent, 'tilegrid': {'WMTS': tilegridwmts}, 'layer': {'Tile': layertitle, 'Vector': layervector}, 'source': {'WMTS': sourcewmts, 'Vector': sourcevector}, 'style': {'Icon': styleicon, 'Style': stylestyle}, 'Overlay': overlay, 'Feature': feature, 'Map': map, 'View': view, 'control': {'Zoom': controlzoom,'ScaleLine': controlscaleline}, 'interaction': interaction, 'Geolocation': geolocation, 'geom': {'point': point}, 'format': {'GeoJSON': formatgeojson}, 'Collection': collection};
-
+        vm.ol = ol;
         console.log('Loading map...');
         vm.load_site_queue();
-
+        
         var nowTemp = new Date();
         var now = moment.utc({year: nowTemp.getFullYear(), month: nowTemp.getMonth(), day: nowTemp.getDate(), hour: 0, minute: 0, second: 0}).toDate();
 
