@@ -9,10 +9,14 @@
         <div class="col-sm-4">
             <button v-show="showAddBtn" @click="showHistory()" class="btn btn-primary pull-right table_btn">Add Price History</button>
         </div>
-        <datatable ref="history_dt" :dtHeaders ="dt_headers" :dtOptions="dt_options" id="ph_table"></datatable>
+asdf dsaf dsaf dsafdsa
+        <datatable ref="history_dt" :dtHeaders="dt_headers" :dtOptions="dt_options" id="ph_table"></datatable>
      </div>
     <confirmbox id="deleteHistory" :options="deleteHistoryPrompt"></confirmbox>
 </div>
+START
+{{ dt_options }}
+EMD
 </template>
 
 <script>
@@ -63,12 +67,16 @@ export default {
         },
         dt_options: {
             type: Object,
-            required: true
+            required: true,
+            columnDefs: [
+                 { "defaultContent": "-", "targets": "_all" },
+            ],
+
         },
         dt_headers:{
             type:Array,
             default:function () {
-                return ['Period Start', 'Period End', 'Adult Price', 'Concession Price', 'Child Price', 'Comment', 'Action'];
+                return ['iPeriod Start', 'Period End', 'Adult Price', 'Concession Price', 'Child Price', 'Comment', 'Action'];
             }
         }
     },
@@ -85,6 +93,13 @@ export default {
         return {
             campground: {},
             campsite:{},
+
+            dt_options: {
+                columnDefs: [
+                     { "defaultContent": "-", "targets": "_all" },
+                ],
+            },
+
             price: {
                 reason:''
             },
@@ -158,7 +173,7 @@ export default {
                 }).done(function(msg) {
                     vm.$refs.history_dt.vmDataTable.ajax.reload();
                 });
-            }else if (vm.level != 'campsite'){
+            } else if (vm.level != 'campsite'){
                 url = vm.historyDeleteURL;
                 $.ajax({
                      beforeSend: function(xhrObj) {

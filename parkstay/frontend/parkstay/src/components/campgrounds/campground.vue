@@ -115,6 +115,7 @@ export default {
     },
     data: function() {
         let vm = this;
+        console.log ("campgroundStayHistory1");
         return {
             stayHistoryURL:api_endpoints.campgroundStayHistory(this.$route.params.id),
             campground: {
@@ -131,6 +132,9 @@ export default {
                 processing: true,
                 deferRender: true,
                 order: [],
+                columnDefs: [
+                    { "defaultContent": "-", "targets": "_all" },
+		],
                 ajax: {
                     url: api_endpoints.campground_price_history(this.$route.params.id),
                     dataSrc: ''
