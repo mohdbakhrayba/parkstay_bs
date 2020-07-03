@@ -49,6 +49,7 @@ export default {
     },
     data: function() {
         let vm = this;
+        console.log('campgroundStayHistory2');
         return {
             campground: {},
             stay: {
@@ -84,6 +85,9 @@ export default {
                 language: {
                     processing: "<i class='fa fa-4x fa-spinner fa-spin'></i>"
                 },
+                columnDefs: [
+                    { "defaultContent": "-", "targets": "_all" },
+                ],
                 ajax: {
                     url: api_endpoints.campgroundStayHistory(vm.object_id),
                     dataSrc: ''

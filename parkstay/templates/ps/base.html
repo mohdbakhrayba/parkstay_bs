@@ -29,6 +29,7 @@
         {% endblock %}
         </header>
         {% block menu %}
+
         <div class="topbar">
             <div class="container-fluid">
                 <nav class="navbar navbar-default">
@@ -96,6 +97,10 @@
                 </nav>
             </div>
         </div>
+        <div class="container">
+                <div class='alert alert-warning'><table style='width: 100%;background-color: none; border: none; background: none;' cellspacing="0" cellpadding="0"><tbody style='background-color: none; border: none; background: none;'><tr><td valign='top'><img src='/static/ps/img/exclamation-mark-30.png'></td><td><a href='https://www.wa.gov.au/organisation/department-of-the-premier-and-cabinet/covid-19-coronavirus-advice-travelling-and-around-western-australia'>Travel restrictions</a> and <a href='https://www.wa.gov.au/organisation/department-of-the-premier-and-cabinet/covid-19-coronavirus-community-advice'>gathering restrictions</a> remain and are subject to change: check before booking</td></tr></tbody></table>
+</div>
+        </div>
         {% endblock %}
         {% block breadcrumbs %}
         {% endblock %}
@@ -121,6 +126,7 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
         {% endblock %}
+        <script src="/static/js/django_queue_manager/site-queue-manager.js?ver={{ VERSION_NO  }}"></script>
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-108679294-1"></script>
         <script>
             window.dataLayer = window.dataLayer || [];

@@ -88,6 +88,10 @@ export default {
                 responsive: true,
                 processing: true,
                 deferRender: true,
+                columnDefs: [
+                    { "defaultContent": "-", "targets": "_all" },
+                ],
+
                 ajax: {
                     url: vm.datatableURL,
                     dataSrc: ''

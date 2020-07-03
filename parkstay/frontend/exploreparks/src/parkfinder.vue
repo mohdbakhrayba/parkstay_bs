@@ -130,7 +130,7 @@
                                 <span class="searchTitle">{{ f.name }}</span>
                             </div>
                             <div class="small-12 medium-12 large-12 columns" v-if="f.images && f.images[0] && f.images[0].image">
-                                <img class="thumbnail" v-bind:src="f.images[0].image"/>
+                                <img class="thumbnail" v-bind:src="parkstayUrl+'/campground-image/146/248/?mediafile='+f.images[0].image"/>
                             </div>
                             <div class="small-12 medium-9 large-9 columns">
                                 <div v-html="f.description"/>
@@ -459,7 +459,32 @@ div.awesomplete > input {
 <script>
 import Vue from 'vue'
 import Awesomplete from 'awesomplete';
-import ol from 'openlayers';
+import proj from 'ol/proj';
+import extent from 'ol/extent';
+import tilegrid from 'ol/tilegrid';
+import tilegridwmts from 'ol/tilegrid/wmts';
+import layer from 'ol/layer/layer';
+import layertitle from 'ol/layer/tile';
+import layervector from 'ol/layer/vector';
+import source from 'ol/source/source';
+import sourcevector from 'ol/source/vector';
+import sourcewmts from 'ol/source/wmts';
+import style from 'ol/style';
+import styleicon from 'ol/style/icon';
+import stylestyle from 'ol/style/style';
+import overlay from 'ol/overlay';
+import feature from 'ol/feature';
+import map from 'ol/map';
+import view from 'ol/view';
+import control from 'ol/control';
+import controlzoom from 'ol/control/zoom';
+import controlscaleline from 'ol/control/scaleline';
+import interaction from 'ol/interaction';
+import geolocation from 'ol/geolocation';
+import point from 'ol/geom/point';
+import formatgeojson from 'ol/format/geojson';
+import collection from 'ol/collection';
+
 import 'foundation-sites/dist/js/foundation.min';
 import 'foundation-datepicker/js/foundation-datepicker';
 import debounce from 'debounce';
@@ -595,7 +620,7 @@ export default {
                 }
                 return $.param(params);
             }
-        }
+        },
     },
     methods: {
         toggleShowFilters: function() {
@@ -619,7 +644,7 @@ export default {
                 }
                 // pan to the spot, zoom slightly closer in for campgrounds
                 view.animate({
-                    center: ol.proj.fromLonLat(target['coordinates']),
+                    center: vm.ol.proj.fromLonLat(target['coordinates']),
                     resolution: resolution,
                     duration: 1000
                 });
@@ -634,7 +659,7 @@ export default {
                         // when you pass control of the popup element to OpenLayers :(
                         $("#mapPopupName")[0].innerHTML = feature.get('name');
                         if (feature.get('images')) {
-                            $("#mapPopupImage").attr('src', feature.get('images')[0].image);
+                            $("#mapPopupImage").attr('src', vm.parkstayUrl+'/campground-image/146/248/?mediafile='+feature.get('images')[0].image);
                             $("#mapPopupImage").show();
                         } else {
                             $("#mapPopupImage").hide();
@@ -660,7 +685,7 @@ export default {
             }
 
             // no match, forward on to mapbox geocode query
-            var center = ol.proj.toLonLat(vm.center);
+            var center = vm.ol.proj.toLonLat(vm.center);
             $.ajax({
                 url: 'https://mapbox.dpaw.wa.gov.au/geocoding/v5/mapbox.places/'+encodeURIComponent(place)+'.json?'+ $.param({
                     country: 'au',
@@ -673,7 +698,7 @@ export default {
                     if (data.features && data.features.length > 0) {
                         var view = vm.olmap.getView();
                         view.animate({
-                            center: ol.proj.fromLonLat(data.features[0].geometry.coordinates),
+                            center: vm.ol.proj.fromLonLat(data.features[0].geometry.coordinates),
                             resolution: vm.resolutions[12],
                             duration: 1000
                         });
@@ -692,8 +717,8 @@ export default {
                 // when you pass control of the popup element to OpenLayers :(
                 $("#mapPopupName")[0].innerHTML = feature.get('name');
                 if (feature.get('images')) {
-                   $("#mapPopupImage").attr('src', feature.get('images')[0].image);
-                    $("#mapPopupImage").show();
+                   $("#mapPopupImage").attr('src', vm.parkstayUrl+'/campground-image/146/248/?mediafile='+feature.get('images')[0].image);
+                   $("#mapPopupImage").show();
                 } else {
                     $("#mapPopupImage").hide();
                 }
@@ -860,14 +885,29 @@ export default {
             });
             this.updateViewport(true);
         },
-
+        load_site_queue: function() {
+            console.log("load_site_queue");
+            var vm = this;
+            if (window.sitequeuemanager) {
+                  console.log("Site Queue Loaded");
+                  // jQuery is loaded
+            } else {
+                 var scriptTag = document.createElement('script');
+                 scriptTag.src = vm.parkstayUrl+'/static/js/django_queue_manager/site-queue-manager.js';
+                 document.head.appendChild(scriptTag);
+                 setTimeout(function() { if (window.sitequeuemanager) { sitequeuemanager.init(); }  vm.load_site_queue(); }, 200);
+                 console.log("Deploying Waiting Queue");
+            }
+        },
     },
     mounted: function () {
         var vm = this;
         $(document).foundation();
-
+        var ol = {'proj': proj, 'extent': extent, 'tilegrid': {'WMTS': tilegridwmts}, 'layer': {'Tile': layertitle, 'Vector': layervector}, 'source': {'WMTS': sourcewmts, 'Vector': sourcevector}, 'style': {'Icon': styleicon, 'Style': stylestyle}, 'Overlay': overlay, 'Feature': feature, 'Map': map, 'View': view, 'control': {'Zoom': controlzoom,'ScaleLine': controlscaleline}, 'interaction': interaction, 'Geolocation': geolocation, 'geom': {'point': point}, 'format': {'GeoJSON': formatgeojson}, 'Collection': collection};
+        vm.ol = ol;
         console.log('Loading map...');
-
+        vm.load_site_queue();
+        
         var nowTemp = new Date();
         var now = moment.utc({year: nowTemp.getFullYear(), month: nowTemp.getMonth(), day: nowTemp.getDate(), hour: 0, minute: 0, second: 0}).toDate();
 
@@ -1193,7 +1233,7 @@ export default {
                 // when you pass control of the popup element to OpenLayers :(
                 $("#mapPopupName")[0].innerHTML = feature.get('name');
                 if (feature.get('images')) {
-                    $("#mapPopupImage").attr('src', feature.get('images')[0].image);
+                    $("#mapPopupImage").attr('src', vm.parkstayUrl+'/campground-image/146/248/?mediafile='+feature.get('images')[0].image);
                     $("#mapPopupImage").show();
                 } else {
                     $("#mapPopupImage").hide();

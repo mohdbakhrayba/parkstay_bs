@@ -463,12 +463,17 @@ def get_available_campsites_list_booking(campsite_qs, request, start_date, end_d
     from parkstay.serialisers import CampsiteSerialiser
     campsites = get_campsite_availability(campsite_qs, start_date, end_date)
     available = []
-
+    #print ("AVAILABLITY")
+    #print (campsites)
     for site_id, dates in campsites.items():
+        print ("DATES") 
+        print (dates)
         some_booked = any([v[0] == 'booked' for k, v in dates.items()])
         some_closed = any([v[0] == 'closed' for k, v in dates.items()])
         some_closed_and_booked = any([v[0] == 'closed & booked' for k, v in dates.items()])
-
+        print (site_id)
+        print (some_booked)
+        print (some_closed)
         if some_closed_and_booked or (some_booked and some_closed):
             av = 'closed & booked'
         elif some_booked:

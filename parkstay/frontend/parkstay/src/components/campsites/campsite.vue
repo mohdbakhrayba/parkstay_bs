@@ -185,6 +185,9 @@ export default {
                     url: api_endpoints.campsites_price_history(this.$route.params.campsite_id),
                     dataSrc: ''
                 },
+                columnDefs: [
+                    { "defaultContent": "-", "targets": "_all" },
+                ],
                 columns: [{
                     data: 'date_start',
                     mRender: function(data, type, full) {

@@ -24,6 +24,7 @@ from django.core.cache import cache
 from ledger.accounts.models import EmailUser, Address
 from ledger.address.models import Country
 from ledger.payments.models import Invoice
+from parkstay import doctopdf
 from parkstay import utils
 from parkstay.helpers import can_view_campground
 from parkstay.models import (Campground,
@@ -1320,7 +1321,8 @@ def get_confirmation(request, *args, **kwargs):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="confirmation-PS{}.pdf"'.format(booking_id)
 
-    pdf.create_confirmation(response, booking)
+    #pdf.create_confirmation(response, booking)
+    response.content = doctopdf.create_confirmation(booking)
 
     return response
 

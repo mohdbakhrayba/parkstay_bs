@@ -10,7 +10,7 @@ ROOT_URLCONF = 'parkstay.urls'
 SITE_ID = 1
 
 # number of seconds before expiring a temporary booking
-BOOKING_TIMEOUT = 1200
+BOOKING_TIMEOUT = 600
 
 INSTALLED_APPS += [
     'bootstrap3',
@@ -18,7 +18,7 @@ INSTALLED_APPS += [
     'taggit',
     'rest_framework',
     'rest_framework_gis',
-
+    'django_site_queue',
 ]
 
 MIDDLEWARE_CLASSES += [
@@ -26,7 +26,7 @@ MIDDLEWARE_CLASSES += [
 ]
 
 # maximum number of days allowed for a booking
-PS_MAX_BOOKING_LENGTH = 28
+PS_MAX_BOOKING_LENGTH = 28 
 
 # minimum number of remaining campsites to trigger an availaiblity warning
 PS_CAMPSITE_COUNT_WARNING = 10
@@ -50,6 +50,7 @@ else:
 
 
 TEMPLATES[0]['DIRS'].append(os.path.join(BASE_DIR, 'parkstay', 'templates'))
+TEMPLATES[0]['DIRS'].append(os.path.join(BASE_DIR, 'django_site_queue', 'templates'))
 TEMPLATES[0]['OPTIONS']['context_processors'].append('parkstay.context_processors.parkstay_url')
 CACHES = {
     'default': {
@@ -90,4 +91,4 @@ DEV_STATIC_URL = env('DEV_STATIC_URL')
 DEPT_DOMAINS = env('DEPT_DOMAINS', ['dpaw.wa.gov.au', 'dbca.wa.gov.au'])
 #LEDGER_REFUND_EMAIL = env('LEDGER_REFUND_EMAIL', False )
 os.environ['LEDGER_REFUND_EMAIL'] = 'True'
-VERSION_NO = '3.01'
+VERSION_NO = '3.02'

@@ -70,7 +70,7 @@
                             <h3 class="text-primary">Booking for</h3>
                         </div>
                         <div class="col-md-2">
-                              <img alt="campground"  class="img-thumbnail img-responsive" src="{{ booking.campground.first_image.image.url }}">
+                              <img alt="campground"  class="img-thumbnail img-responsive" src="/campground-image/86/148/?mediafile={{ booking.campground.first_image.image.url }}">
                               <p class="pricing" v-cloak >
                             {% verbatim %}
                                   <strong>${{ perDayFee|formatMoney(2) }}</strong>
@@ -300,11 +300,23 @@
                         </div>
                         <div class="col-md-6">
                             <div class="row">
-                                <div class="col-md-8 col-md-offset-5">
+                                <div class="col-md-4 ">&nbsp;</div>
+                                <div class="col-md-8 icol-md-offset-5">
+
                                     <div class="checkbox">
-                                        <label><input type="checkbox" value="" v-model="toc">I agree to the <a target="_blank" href="{{EXPLORE_PARKS_TERMS}}">terms and conditions</a></label>
+                                        <label><input type="checkbox" v-bind:value="trav_res"   name='trav_res' v-model="trav_res">I have checked Western Australia’s current <a href='https://www.wa.gov.au/organisation/department-of-the-premier-and-cabinet/covid-19-coronavirus-advice-travelling-and-around-western-australia'>travel restrictions</a> and confirm that those restrictions permit me to travel to the campsite I am booking.</label>
                                     </div>
-                                    <button :disabled="!toc" type="submit" class="btn btn-primary btn-lg">Proceed to payment</button>
+
+
+                                    <div class="checkbox">
+                                        <label><input type="checkbox" v-bind:value="toc"   name='toc' v-model="toc">I agree to the <a target="_blank" href="{{EXPLORE_PARKS_TERMS}}">terms and conditions</a></label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label><input type="checkbox" v-bind:value="outsideregion"  name='outsideregion' v-model="outsideregion">I understand that this booking does not provide any exemption from Western Australia’s <a href='https://www.wa.gov.au/organisation/department-of-the-premier-and-cabinet/covid-19-coronavirus-advice-travelling-and-around-western-australia'>travel restrictions</a> or <a href='https://www.wa.gov.au/organisation/department-of-the-premier-and-cabinet/covid-19-coronavirus-community-advice'>gathering restrictions</a>, that those restrictions are subject to change, and that hygiene facilities at Parks and Wildlife Service campgrounds are minimal.</label>
+
+                                    </div>
+
+                                    <button :disabled="!toc||!outsideregion||!trav_res" type="submit" class="btn btn-primary btn-lg">Proceed to payment</button>
                                 </div>
                             </div>
                         </div>
@@ -346,6 +358,8 @@
             concessionWarning: false,
             vehicleCount: 1,
             toc: false,
+            outsideregion: false,
+            trav_res: false,
             booking_id: {{ booking.id }}
         },
         filters:{
